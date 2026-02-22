@@ -1,19 +1,15 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  
+  import { useTaskStore } from '@/stores/task'
 
-  const emit = defineEmits<{
-    addTask: [newTask: string]
-  }>();
-
-  
+  const taskStore = useTaskStore()
 
   const newTask = ref("");
   const error = ref("");
 
   function formSubmitted() {
     if (newTask.value.trim()){
-      emit("addTask", newTask.value);
+      taskStore.addTask(newTask.value);
       newTask.value = "";
       error.value = "";
     } else {

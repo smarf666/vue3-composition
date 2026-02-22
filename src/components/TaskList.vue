@@ -1,30 +1,23 @@
 <script lang="ts" setup>
   import { TransitionGroup } from 'vue';
-  import { Task } from '@/types';
+  import { useTaskStore } from '@/stores/task';
 
-  const props = defineProps<{
-    tasks: Task[]
-  }>();
-
-  const emits = defineEmits<{
-    toggleDone: [id: string];
-    removeTask: [id: string];
-  }>();
+  const taskStore = useTaskStore();
 
 </script>
 
 <template>
   <TransitionGroup name="list" tag="div">
-    <article v-for="task in tasks" :key="task.id">
+    <article v-for="task in taskStore.filteredTasks" :key="task.id">
       <label>      
         <input 
-          @input="emits('toggleDone', task.id)" 
+          @input="taskStore.toggleDone(task.id)" 
           :checked="task.done" 
           type="checkbox" 
         />
         <span :class="{ done: task.done }">{{ task.title }}</span>
       </label>
-      <button @click="emits('removeTask', task.id)">Remove</button>       
+      <button @click="taskStore.removeTask(task.id)">Remove</button>       
     </article>
   </TransitionGroup>
 </template>

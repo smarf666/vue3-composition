@@ -1,19 +1,24 @@
 <script lang="ts" setup>
 import { TaskFilter } from '@/types';
 
+import { useTaskStore } from '@/stores/task';
+
+const taskStore = useTaskStore();
+
 
 const props = defineProps<{
-    filterType: TaskFilter;
-    currentFilter: TaskFilter;
+    filterType: TaskFilter;    
 }>()
-
-const emits = defineEmits<{
-    setFilter: [filterType: TaskFilter];
-}>();
 </script>
 
 <template>
-    <button class="secondary" :class="{ contrast: currentFilter === filterType }" @click="emits('setFilter', filterType)">{{ filterType }}</button>    
+    <button 
+        class="secondary" 
+        :class="{ contrast: taskStore.filter === filterType }" 
+        @click="taskStore.setFilter(filterType)"
+    >
+        {{ filterType }}
+    </button>  
 </template>
 
 <style scoped>
